@@ -64,7 +64,7 @@ public class ApiController {
 
     @RequestMapping(value="/api", produces = "application/json")
     @ResponseBody public String[] listCollections(HttpServletRequest request){
-        return ElasticData.listCollections()
+        return ElasticData.listCollections()-'runnable'
     }
     @RequestMapping(value="/api/{collection}", produces = "application/json")
     public def listTypes(@PathVariable String collection, HttpServletRequest request, HttpServletResponse response) throws ExecutionException, InterruptedException {
