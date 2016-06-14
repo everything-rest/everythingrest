@@ -1,5 +1,7 @@
 package rest.everything.core.data
 
+import javax.servlet.http.HttpServletRequest
+
 /**
  *
  */
@@ -44,10 +46,12 @@ class ScriptLoader {
         return binding
     }
 
-    public def run(String text,String signature, def scriptMap,def reqMap){
+    public def run(String text, String signature, def scriptMap, HttpServletRequest request){
+        def reqMap = request.parameterMap
         Script script = parse(text,signature)
         if(script) {
             Binding binding = toBinding(scriptMap, reqMap)
+            binding.setVariable('req_address',request.remoteAddr)
             script.setBinding(binding)
             return script.run()
         }

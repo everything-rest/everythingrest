@@ -1,14 +1,6 @@
 package rest.everything.core.controllers
 
-import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest
-import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse
 import org.elasticsearch.action.get.GetResponse
-import org.elasticsearch.action.search.SearchResponse
-import org.elasticsearch.action.search.SearchType
-import org.elasticsearch.cluster.metadata.MappingMetaData
-import org.elasticsearch.common.collect.ImmutableOpenMap
-import org.elasticsearch.index.query.QueryBuilder
-import org.elasticsearch.index.query.QueryBuilders
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import rest.everything.core.ContextHolder
@@ -51,7 +43,7 @@ public class ApiController {
             if(map.runnable == true){
                 String signature = ScriptLoader.generateSignature(collection,type,id)
                 def scriptObject = ElasticData.getScript(signature)
-                def result = ScriptLoader.instance.run(scriptObject.script,signature,map.run.parameters,request.parameterMap)
+                def result = ScriptLoader.instance.run(scriptObject.script,signature,map.run.parameters,request)
                 def res = [result:result]
                 return res
             }
