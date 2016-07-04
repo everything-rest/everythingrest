@@ -1,7 +1,6 @@
 package rest.everything.core.data
 
 import javax.servlet.http.HttpServletRequest
-
 /**
  *
  */
@@ -36,8 +35,13 @@ class ScriptLoader {
 
     public static def toBinding(def scriptMap, def reqMap){
         Binding binding = new Binding()
-        scriptMap.each {
+        Iterator iterator = scriptMap.iterator()
+        while(iterator.hasNext()){
+            def it = iterator.next()
             String name = it.name
+            if(!reqMap.containsKey(name)) {
+                throw new IllegalArgumentException(name)
+            }
             def val = reqMap[name]
             if(val)
                 val = val[0]

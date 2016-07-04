@@ -43,9 +43,14 @@ public class ApiController {
             if(map.runnable == true){
                 String signature = ScriptLoader.generateSignature(collection,type,id)
                 def scriptObject = ElasticData.getScript(signature)
-                def result = ScriptLoader.instance.run(scriptObject.script,signature,map.run.parameters,request)
-                def res = [result:result]
-                return res
+                try {
+                    def result = ScriptLoader.instance.run(scriptObject.script, signature, map.run.parameters, request)
+                    def res = [result: result]
+                    return res
+                }catch(IllegalArgumentException e){
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    return [result:[error:'required parameter missing',paramter:e.message]]
+                }
             }
         }catch (Exception e){
             e.printStackTrace()
